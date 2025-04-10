@@ -28,6 +28,7 @@ class Operation(
     @LastModifiedDate
     var updatedAt: Instant? = null,
 
+    // TODO: add a query to fetch eagerly
     @OneToMany(mappedBy = "operation", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var cardResults: MutableList<CardResult> = mutableListOf()
 )

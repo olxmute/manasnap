@@ -6,8 +6,10 @@ import com.manasnap.exception.OperationNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.bind.support.WebExchangeBindException
 
 @RestControllerAdvice
 class GlobalExceptionHandlerController {
@@ -34,6 +36,18 @@ class GlobalExceptionHandlerController {
         )
         logger.error("Card processing error: {}", ex.message, ex)
         return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    // TODO: add more details about invalid input (exact fields and errors)
+    @ExceptionHandler(WebExchangeBindException::class)
+    fun handleWebExchangeBindException(ex: WebExchangeBindException): ResponseEntity<ErrorResponseDto> {
+        val errorResponse = ErrorResponseDto(
+            error = "InvalidInput",
+            message = "Invalid input.",
+            status = HttpStatus.UNPROCESSABLE_ENTITY.value()
+        )
+        logger.error("Invalid input: {}", ex.message, ex)
+        return ResponseEntity(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY)
     }
 
     @ExceptionHandler(Exception::class)
