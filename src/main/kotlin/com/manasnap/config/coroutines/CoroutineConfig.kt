@@ -1,4 +1,4 @@
-package com.manasnap.config
+package com.manasnap.config.coroutines
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

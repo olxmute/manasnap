@@ -61,7 +61,7 @@ class CardProcessingService(
             logger.info("Successfully fetched PNG URL for card [{}]: {}", cardName, pngUrl)
         } catch (ex: Exception) {
             cardResult.error = "Exception: ${ex.message}"
-            logger.error("Exception processing card [{}]: {}", cardName, ex.message)
+            logger.error("Exception processing card [{}]: {}", cardName, ex.message, ex)
         }
 
         withContext(dispatcherProvider.io) {

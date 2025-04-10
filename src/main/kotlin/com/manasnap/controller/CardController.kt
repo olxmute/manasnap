@@ -3,6 +3,7 @@ package com.manasnap.controller
 import com.manasnap.dto.CardsRequest
 import com.manasnap.dto.OperationResponse
 import com.manasnap.service.CardOperationService
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,7 +18,7 @@ class CardController(
 ) {
 
     @PostMapping
-    suspend fun submitCards(@RequestBody request: CardsRequest): OperationResponse =
+    suspend fun submitCards(@RequestBody @Validated request: CardsRequest): OperationResponse =
         cardOperationService.submitCards(request)
 
     @GetMapping("/{operationId}")
