@@ -1,23 +1,24 @@
 package com.manasnap.service
 
 import com.manasnap.client.ScryfallClient
+import com.manasnap.config.coroutines.CoroutineDispatcherProvider
 import com.manasnap.entity.CardResult
 import com.manasnap.entity.Operation
 import com.manasnap.entity.OperationStatus
 import com.manasnap.exception.CardProcessingException
-import com.manasnap.repository.CardResultRepository
 import com.manasnap.repository.OperationRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class CardProcessingService(
     private val operationRepository: OperationRepository,
-    private val cardResultRepository: CardResultRepository,
-    private val scryfallClient: ScryfallClient
+    private val scryfallClient: ScryfallClient,
+    private val dispatcherProvider: CoroutineDispatcherProvider
 ) {
     private val logger = LoggerFactory.getLogger(CardProcessingService::class.java)
 
@@ -63,7 +64,9 @@ class CardProcessingService(
             logger.error("Exception processing card [{}]: {}", cardName, ex.message)
         }
 
-        cardResultRepository.save(cardResult)
+        withContext(dispatcherProvider.io) {
+            operationRepository.save(operation)
+        }
         return cardResult
     }
 
