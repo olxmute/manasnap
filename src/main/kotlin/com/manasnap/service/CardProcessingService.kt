@@ -6,6 +6,7 @@ import com.manasnap.entity.CardResult
 import com.manasnap.entity.Operation
 import com.manasnap.entity.OperationStatus
 import com.manasnap.exception.CardProcessingException
+import com.manasnap.repository.CardResultRepository
 import com.manasnap.repository.OperationRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service
 @Service
 class CardProcessingService(
     private val operationRepository: OperationRepository,
+    private val cardResultRepository: CardResultRepository,
     private val scryfallClient: ScryfallClient,
     private val dispatcherProvider: CoroutineDispatcherProvider
 ) {
@@ -65,7 +67,7 @@ class CardProcessingService(
         }
 
         withContext(dispatcherProvider.io) {
-            operationRepository.save(operation)
+            cardResultRepository.save(cardResult)
         }
         return cardResult
     }

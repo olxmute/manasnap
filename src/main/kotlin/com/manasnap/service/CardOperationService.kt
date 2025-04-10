@@ -14,7 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -43,7 +42,7 @@ class CardOperationService(
             cardProcessingService.processCards(operation, request.cardNames)
         }
 
-        OperationResponse(operationId = operation.id, status = operation.status)
+        OperationResponse(operationId = operation.id!!)
     }
 
     /**
@@ -51,9 +50,10 @@ class CardOperationService(
      */
     suspend fun getOperationStatus(operationId: String): OperationResponse {
         val operation = withContext(dispatcherProvider.io) {
-            operationRepository.findByIdOrNull(operationId) ?: throw OperationNotFoundException("Operation not found")
+            operationRepository.findByIdWithCardResult(operationId)
+                ?: throw OperationNotFoundException("Operation not found")
         }
-        return OperationResponse(operationId = operation.id, status = operation.status).apply {
+        return OperationResponse(operationId = operation.id!!, status = operation.status).apply {
             if (operation.status != OperationStatus.PROCESSING) {
                 val successes = operation.cardResults.filter { it.error == null }
                     .map { CardResultResponse(it.cardName, it.pngUrl) }

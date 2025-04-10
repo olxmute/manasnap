@@ -10,8 +10,8 @@ import jakarta.persistence.ManyToOne
 @Entity
 class CardResult(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String? = null,
 
     var cardName: String = "",
     var pngUrl: String? = null,

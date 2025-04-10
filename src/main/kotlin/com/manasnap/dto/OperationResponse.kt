@@ -4,10 +4,10 @@ import com.manasnap.entity.OperationStatus
 
 data class OperationResponse(
     val operationId: String,
-    var status: OperationStatus,
+    var status: OperationStatus? = null,
     var results: List<CardResultResponse>? = null,
     var failures: List<CardFailureResponse>? = null,
-    var error: String? = null
+    var error: String? = null,
 )
 
 data class CardResultResponse(
