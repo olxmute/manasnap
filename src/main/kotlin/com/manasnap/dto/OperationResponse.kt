@@ -2,9 +2,13 @@ package com.manasnap.dto
 
 import com.manasnap.entity.OperationStatus
 
+data class OperationCreatedResponse(
+    val operationId: String,
+)
+
 data class OperationResponse(
     val operationId: String,
-    var status: OperationStatus? = null,
+    var status: OperationStatus,
     var results: List<CardResultResponse>? = null,
     var failures: List<CardFailureResponse>? = null,
     var error: String? = null,

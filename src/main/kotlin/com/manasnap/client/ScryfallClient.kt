@@ -17,7 +17,11 @@ class ScryfallClient(
     suspend fun getCardByName(cardName: String): ScryfallCardResponse {
         val encodedName = URLEncoder.encode(cardName, StandardCharsets.UTF_8)
         return webClient.get()
-            .uri(scryfallProperties.endpoints.cardByName, mapOf("exact" to encodedName))
+            .uri {
+                it.path(scryfallProperties.endpoints.cardByName)
+                    .queryParam("exact", encodedName)
+                    .build()
+            }
             .retrieve()
             .awaitBody()
     }

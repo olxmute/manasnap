@@ -50,7 +50,10 @@ class CardProcessingService(
     }
 
     private suspend fun processSingleCard(operation: Operation, cardName: String): CardResult {
-        val cardResult = CardResult(cardName = cardName, operation = operation)
+        val cardResult = CardResult().apply {
+            this.cardName = cardName
+            this.operation = operation
+        }
         try {
             val cardResponse = scryfallClient.getCardByName(cardName)
             val pngUrl = cardResponse.imageUris?.png
