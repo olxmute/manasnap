@@ -13,4 +13,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true 
+    show-sql: true
+
+scryfall:
+  api:
+    base-url: https://api.scryfall.com
+    endpoints:
+      card-by-name: /cards/named 

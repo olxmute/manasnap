@@ -1,5 +1,7 @@
 package com.manasnap.dto
 
+import jakarta.validation.constraints.NotEmpty
+
 data class CardsRequest(
-    val cardNames: List<String>
+    @get:NotEmpty val cardNames: List<String>
 )
