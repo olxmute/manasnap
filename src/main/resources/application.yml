@@ -16,7 +16,13 @@ spring:
 scryfall:
   api:
     base-url: https://api.scryfall.com
-    request-timeout: 5000
-    max-concurrent-requests: 7
     endpoints:
-      card-by-name: /cards/named 
+      card-by-name: /cards/named
+
+resilience4j:
+  ratelimiter:
+    instances:
+      scryfallRateLimiter:
+        limitForPeriod: 8
+        limitRefreshPeriod: 1s
+        timeoutDuration: 1m
